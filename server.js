@@ -36,16 +36,34 @@ app.get("/api/config", (req, res) => {
 });
 
 app.get("/api/ingredients", (req, res) => {
-  db.Ingredient.find({}).then((foundIngredients) => {
-    res.json(foundIngredients);
+    db.Ingredient.find({})
+      .then((foundIngredients) => {
+        res.json(foundIngredients);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.json({
+          error: true,
+          data: null,
+          message: "Failed to retrieve ingredients.",
+        });
+      });
   });
-});
-
-app.post("/api/ingredients", (req, res) => {
-  db.Ingredient.create(req.body).then((newIngredient) => {
-    res.json(newIngredient);
+  
+  app.post("/api/ingredients", (req, res) => {
+    db.Ingredient.create(req.body)
+      .then((newIngredient) => {
+        res.json(newIngredient);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.json({
+          error: true,
+          data: null,
+          message: "Failed to create new ingredient.",
+        });
+      });
   });
-});
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
